@@ -1,19 +1,20 @@
-Music Playlist Project
+# Music Playlist Project
 
-Обзор
+## Обзор
 
 Этот проект представляет собой музыкальный плейлист-менеджер на языке Python с использованием SQL для постоянного хранения данных. Он состоит из классов для управления треками, плейлистами и альбомами. Этот README предоставляет обзор структуры проекта, ключевых функций и инструкций по настройке и запуску проекта.
 
-Структура проекта
+## Структура проекта
 
-	•	Track: Представляет один трек.
-	•	Playlist: Управляет коллекцией треков.
-	•	Album: Наследует от Playlist, обеспечивает, чтобы все треки принадлежали одному альбому и исполнителю.
+- **Track** : Представляет один трек.
+- **Playlist** : Управляет коллекцией треков.
+- **Album** : Наследует от Playlist, обеспечивает, чтобы все треки принадлежали одному альбому и исполнителю.
 
-Классы и методы
+## Классы и методы
 
-Класс Track
+### Класс Track
 
+```python
 class Track:
     def __init__(self, id: int, name: str, album: str, artist: str, time: int):
         # Инициализация атрибутов трека
@@ -26,9 +27,9 @@ class Track:
 
     def save2db(self):
         # Сохраняет информацию о треке в базу данных
-
-Класс Playlist
-
+```
+### Класс Playlist
+```python
 class Playlist:
     def __init__(self, tracks: list, name: str = '', author: str = ''):
         # Инициализация атрибутов плейлиста
@@ -46,11 +47,11 @@ class Playlist:
         # Сохраняет информацию о плейлисте в базу данных
 
     @staticmethod
-    def load_from_db(cls, playlist_id: int):
+    def load_from_db(playlist_id: int):
         # Загружает плейлист из базы данных
-
-Класс Album
-
+```
+### Класс Album
+```python
 class Album(Playlist):
     def __init__(self, tracks: list, name: str = '', artist: str = ''):
         # Инициализация атрибутов альбома с проверкой
@@ -61,17 +62,17 @@ class Album(Playlist):
     @classmethod
     def load_from_db(cls, playlist_id: int):
         # Загружает альбом из базы данных
+```
+## Схема базы данных
 
-Схема базы данных
+### Таблицы
 
-Таблицы
+- **tracks** : Хранит информацию о треках.
+- **playlists** : Хранит информацию о плейлистах.
+- **playlist_tracks** : Таблица связи между плейлистами и треками.
 
-	•	tracks: Хранит информацию о треках.
-	•	playlists: Хранит информацию о плейлистах.
-	•	playlist_tracks: Таблица связи между плейлистами и треками.
-
-Пример схемы
-
+### Пример схемы
+```sql
 CREATE TABLE tracks (
     id INTEGER PRIMARY KEY,
     name TEXT,
@@ -92,21 +93,15 @@ CREATE TABLE playlist_tracks (
     FOREIGN KEY (playlist_id) REFERENCES playlists(id),
     FOREIGN KEY (track_id) REFERENCES tracks(id)
 );
+```
 
-Настройка и использование
+## Необходимые компоненты
 
-Необходимые компоненты
+- Python 3.x
+- SQLite
 
-	•	Python 3.x
-	•	SQLite
-
-
-python main.py
-
-
-
-Пример main.py
-
+## Пример main.py
+```python
 def main():
     # Инициализация базы данных
     initialize_database()
@@ -130,3 +125,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+```
